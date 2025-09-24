@@ -7,14 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            agent { label 'docker-ssh-agent' }
-            steps {
-                git branch: "${env.BRANCH_NAME}", url: 'https://github.com/SNOWxZERO/Calculator.git'
-                stash includes: '**', name: 'source'
-            }
-        }
-
         stage('Build & Push Image') {
             agent { label 'docker-ssh-agent' }
             steps {
