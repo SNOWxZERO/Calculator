@@ -3,14 +3,13 @@ pipeline {
 
     environment {
         DOCKER_CREDS = credentials('dockerhub-cred')
-        IMAGE_NAME = "snowxzero/simple-calc:latest"
+        IMAGE_NAME   = "snowxzero/simple-calc:latest"
     }
 
     stages {
         stage('Build & Push Image') {
             agent { label 'docker-ssh-agent' }
             steps {
-                unstash 'source'
                 sh "docker build -t $IMAGE_NAME ."
                 sh 'echo $DOCKER_CRED_PSW | docker login -u $DOCKER_CRED_USR --password-stdin'
                 sh "docker push $IMAGE_NAME"
