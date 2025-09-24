@@ -12,7 +12,7 @@ pipeline {
             steps {
                 sh "docker build -t $IMAGE_NAME ."
                 sh 'echo $DOCKER_CRED_PSW | docker login -u $DOCKER_CRED_USR --password-stdin'
-                sh "docker push $IMAGE_NAME"
+                sh "sudo docker push $IMAGE_NAME"
             }
         }
 
