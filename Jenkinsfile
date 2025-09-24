@@ -2,7 +2,6 @@ pipeline {
     agent none
 
     environment {
-        DOCKER_CREDS = credentials('dockerhub-cred')
         IMAGE_NAME   = "snowxzero/simple-calc:latest"
     }
 
@@ -11,7 +10,11 @@ pipeline {
             agent { label 'docker-ssh-agent' }
             steps {
                 sh "docker build -t $IMAGE_NAME ."
-                sh 'echo $DOCKER_CRED_PSW | docker login -u $DOCKER_CRED_USR --password-stdin'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', 
+                                  usernameVariable: 'DOCKER_USER', 
+                                  passwordVariable: 'DOCKER_PASS')]) {
+                sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                }
                 sh "sudo docker push $IMAGE_NAME"
             }
         }
