@@ -6,6 +6,11 @@ pipeline {
     }
 
     stages {
+        stage('Echo Branch') {
+            steps {
+                echo "Building branch: ${env.BRANCH_NAME}"
+            }
+        }
         stage('Build & Push Image') {
             agent { label 'docker-ssh-agent' }
             steps {
